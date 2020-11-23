@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Generator</title>
+  <script src="./easy.qrcode.min.js"></script>
+</head>
+
+<body>
+  <div>
+    <input id="input_url" type="text" value="http://naver.com">
+    <button type="button" onclick="genQR(document.getElementById('input_url').value)">QR생성</button>
+    <button type="button" onclick="clearQR()">QR초기화</button>
+  </div>
+
+  <div>
+    <input id="qr_width" type="number" value="256" style="width: 48px;">
+    <span> x </span>
+    <input id="qr_height" type="number" value="256" style="width: 48px;">
+    <button type=" button" onclick="resizeQR(document.getElementById('qr_width').value,
+      document.getElementById('qr_height').value)">QR리사이즈</button>
+  </div>
+
+  <div id="qrcode"></div>
+</body>
+
+<script>
+  /*
+    "#################################################################################################################
+    " 2020.11.11 강준하 작성
+    " 소스 원본: https://github.com/ushelp/EasyQRCodeJS
+    "
+    " ※중앙에 너무 큰 로고 혹은 화려한 배경 사진은 테스트 결과 인식이 잘 안됩니다
+    "#################################################################################################################
+  */
+  let options = {
+    // ====== Basic(기본설정)
+    text: "https://github.com/ushelp/EasyQRCodeJS",
+    width: 256,
+    height: 256,
+    colorDark: "#000000",
+    colorLight: "#ffffff",
+    dotScale: 1, // 0 ~ 1
+
+    // QR코드 오류복원 레벨(L < M < Q < H)
+    // https://www.qrcode.com/ko/about/error_correction.html
+    correctLevel: QRCode.CorrectLevel.M,
+
+    // ====== Quiet Zone(테두리)
+    quietZone: 8,
+    quietZoneColor: "#81c147",
+
+    // ====== Logo(중앙 로고 이미지)
+    logo: "./lodev_logo.png",
+    logoWidth: 80,
+    logoHeight: 80,
+    logoBackgroundColor: "#fffff",
+    logoBackgroundTransparent: true,
+
+    // ====== Backgroud Image(뒷배경 이미지)
+    /*
+    backgroundImage: "",
+    backgroundImageAlpha: 1,
+    autoColor: false,
+    */
+
+    // ====== Colorful(QR 색상)
+    // === Posotion Pattern(Eye) Color
+    /*
+    PO: "#e1622f", // Global Posotion Outer color. if not set, the defaut is `colorDark`
+    PI: "#aa5b71", // Global Posotion Inner color. if not set, the defaut is `colorDark`
+    PO_TL:"", // Posotion Outer color - Top Left
+    PI_TL:"", // Posotion Inner color - Top Left
+    PO_TR:"", // Posotion Outer color - Top Right
+    PI_TR:"", // Posotion Inner color - Top Right
+    PO_BL:"", // Posotion Outer color - Bottom Left
+    PI_BL:"", // Posotion Inner color - Bottom Left
+    */
+    // === Alignment Color
+    /*
+    AO: "", // Alignment Outer. if not set, the defaut is `colorDark`
+    AI: "", // Alignment Inner. if not set, the defaut is `colorDark`
+    */
+    // === Timing Pattern Color
+    /*
+    timing: "#e1622f", // Global Timing color. if not set, the defaut is `colorDark`
+    timing_H: "", // Horizontal timing color
+    timing_V: "", // Vertical timing color
+    */
+
+    // ====== Title(상단 제목)
+    title: "신청콕",
+    titleFont: "bold 24px Arial",
+    titleColor: "#004284",
+    titleBackgroundColor: "#fff",
+    titleHeight: 48,
+    titleTop: 32,
+
+    // ====== SubTitle(부제목)
+    /*
+    subTitle: "부제목입니다", // content
+    subTitleFont: "14px Arial", // font. default is "14px Arial"
+    subTitleColor: "#ff7f00", // color. default is "4F4F4F"
+    subTitleTop: 48, // draws y coordinates. default is 0
+    */
+
+    // ===== Event Handler(QR 이벤트 핸들러)
+    /*
+    onRenderingStart: () => { console.log("Rendering Start") },
+    onRenderingEnd: () => { console.log("Rendering End") },
+    */
+
+    // ===== Versions(QR 버전 1 ~ 40)
+    // https://www.qrcode.com/en/about/version.html
+    /*
+    version: 0, // URL에 따라 자동으로 선정
+    */
+
+    // ===== Binary(hex) data mode
+    /*
+    binary: false, // Whether it is binary mode, default is text mode.
+    */
+
+    // ===== Tooltip
+    /*
+    tooltip: false, // Whether set the QRCode Text as the title attribute value of the QRCode div
+    */
+
+    // =====  Drawing method() 
+    /*
+    drawer: "canvas", // Which drawing method to use. "canvas", "svg". default is "canvas"
+    */
+  };
+
+  let qrcode = new QRCode(document.getElementById("qrcode"), options);
+
+  // QR 생성
+  function genQR(url) {
+    console.log(url);
+    qrcode.makeCode(url);
+  }
+
+  // QR 초기화
+  function clearQR(url) {
+    console.log("QR 초기화");
+    document.getElementById("input_url").value = ""
+    qrcode.clear();
+  }
+
+  // QR 리사이즈
+  function resizeQR(w, h) {
+    console.log(`QR 리사이즈 ${w}x${h}`);
+    qrcode.resize(w, h);
+  }
+</script>
+
+</html>
